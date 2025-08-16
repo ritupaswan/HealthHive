@@ -47,7 +47,7 @@ const About = () => {
               className="w-40 h-40 object-cover rounded-full mx-auto mb-4 shadow-lg"
             />
             <h3 className="font-semibold text-purple-700 text-lg">Member {index + 1}</h3>
-            <p className="text-gray-600 text-sm">AI & Health Specialist</p>
+            <p className="text-gray-600 text-sm"> Health Specialist</p>
           </div>
         ))}
       </div>
@@ -60,7 +60,7 @@ const About = () => {
         </div>
         <div className="p-6 bg-pink-50 rounded-2xl shadow-lg">
           <p className="text-4xl font-bold text-pink-700 mb-2">120+</p>
-          <p className="text-gray-700">AI Health Insights</p>
+          <p className="text-gray-700"> Health Insights</p>
         </div>
         <div className="p-6 bg-green-50 rounded-2xl shadow-lg">
           <p className="text-4xl font-bold text-green-700 mb-2">24/7</p>

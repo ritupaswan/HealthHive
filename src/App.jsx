@@ -12,6 +12,9 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SymptomChecker from './pages/SymptomChecker'; // <-- New import
 import AIHealthPredictor from './pages/AIHealthPredictor';
+import CreateAccount from "./pages/CreateAccount";
+
+
 
 
 const App = () => {
@@ -33,6 +36,7 @@ const App = () => {
         {/* New route */}
         <Route path='/symptom-checker' element={<SymptomChecker />} />
         <Route path='/ai-health' element={<AIHealthPredictor />} />
+        <Route path="/create-account" element={<CreateAccount />} />
 
       </Routes>
       <Footer />

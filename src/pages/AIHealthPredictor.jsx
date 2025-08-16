@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaRobot } from 'react-icons/fa';
-import stayImage from '../assets/stay.jpg'; // Local image import
+import stayImage from '../assets/stay.jpg';
 
 const AIHealthPredictor = () => {
   const [formData, setFormData] = useState({
@@ -13,12 +13,15 @@ const AIHealthPredictor = () => {
   });
 
   const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
 
   // Health quiz game
   const questions = [
     { q: "How much water should you drink daily?", options: ["1-2 glasses", "2-3 litres", "5 litres"], answer: "2-3 litres" },
-    { q: "How many hours of sleep are ideal?", options: ["4-5 hours", "7-8 hours", "10 hours"], answer: "7-8 hours" },
-    { q: "Which is healthier?", options: ["Fruits", "Chips", "Soda"], answer: "Fruits" },
+    { q: "Which is healthier for snacks?", options: ["Fruits", "Chips", "Soda"], answer: "Fruits" },
+    { q: "Ideal sleep hours per day?", options: ["4-5 hours", "7-8 hours", "10 hours"], answer: "7-8 hours" },
+    { q: "Exercise frequency for healthy lifestyle?", options: ["Never", "1-2 times/week", "5-6 times/week"], answer: "5-6 times/week" },
+    { q: "Which is bad for health?", options: ["Vegetables", "Junk food", "Water"], answer: "Junk food" },
   ];
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
@@ -42,6 +45,17 @@ const AIHealthPredictor = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Form validation
+    if (
+      !formData.age || !formData.gender || !formData.sleep ||
+      !formData.activity || !formData.stress || !formData.diet
+    ) {
+      setError('Please fill all fields correctly.');
+      return;
+    }
+
+    setError('');
+
     const wellnessScore = Math.floor(Math.random() * 50 + 50);
     const tips = [
       "Drink more water",
@@ -54,6 +68,13 @@ const AIHealthPredictor = () => {
     setResult({ score: wellnessScore, tip: tips[Math.floor(Math.random() * tips.length)] });
   };
 
+  // Determine lifestyle based on quiz score
+  const lifestyleFeedback = () => {
+    if (score === questions.length) return "Excellent lifestyle! Keep it up 💜";
+    if (score >= Math.floor(questions.length * 0.6)) return "Good lifestyle! Small improvements can help 💜";
+    return "Poor lifestyle. Try to adopt healthier habits 💜";
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-200 via-pink-100 to-blue-100 py-16 px-6">
       <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-8 text-center">
@@ -63,7 +84,7 @@ const AIHealthPredictor = () => {
       <div className="grid md:grid-cols-2 gap-10 items-start">
         
         {/* Left Column - Form */}
-        <div>
+        <div className="flex flex-col justify-between h-full">
           <form onSubmit={handleSubmit} className="bg-white/50 backdrop-blur-md p-6 rounded-xl shadow-xl flex flex-col gap-4">
             <input type="number" name="age" placeholder="Age" value={formData.age} onChange={handleChange} className="p-3 rounded-md border border-gray-300"/>
             
@@ -79,6 +100,8 @@ const AIHealthPredictor = () => {
             <input type="number" name="stress" placeholder="Stress level 1-10" value={formData.stress} onChange={handleChange} className="p-3 rounded-md border border-gray-300"/>
             <input type="text" name="diet" placeholder="Diet type (Veg/Non-Veg/Vegan)" value={formData.diet} onChange={handleChange} className="p-3 rounded-md border border-gray-300"/>
 
+            {error && <p className="text-red-500 font-semibold">{error}</p>}
+
             <button type="submit" className="bg-purple-500 text-white py-3 rounded-full font-semibold hover:scale-105 transition-transform">
               Predict Wellness
             </button>
@@ -90,6 +113,11 @@ const AIHealthPredictor = () => {
               <p className="mt-4 text-gray-700">AI Tip: {result.tip}</p>
             </div>
           )}
+
+          {/* Health Thought at Bottom */}
+          <p className="mt-8 text-center text-2xl md:text-3xl font-extrabold text-purple-700">
+            "Health is wealth – nurture your body, nurture your life."
+          </p>
         </div>
 
         {/* Right Column - Image & Quiz */}
@@ -100,7 +128,6 @@ const AIHealthPredictor = () => {
             className="rounded-xl shadow-lg w-full"
           />
 
-          {/* Quiz Section */}
           <div className="bg-white/50 backdrop-blur-md p-6 rounded-xl shadow-xl w-full">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Health Quiz</h2>
             {!quizFinished ? (
@@ -119,7 +146,10 @@ const AIHealthPredictor = () => {
                 </div>
               </div>
             ) : (
-              <p className="font-semibold text-gray-700">Quiz Finished! You scored {score} / {questions.length}</p>
+              <div className="text-center">
+                <p className="font-semibold text-gray-700 mb-2">Quiz Finished! You scored {score} / {questions.length}</p>
+                <p className="text-purple-700 font-bold text-lg">{lifestyleFeedback()}</p>
+              </div>
             )}
           </div>
         </div>
